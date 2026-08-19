@@ -1,0 +1,24 @@
+// أضف هذا المقطع داخل ملف firestore.rules الحالي لديك (داخل service cloud.firestore { match /databases/{database}/documents { ... } })
+// -----------------------------------------------------------------------------
+
+// بيانات بصمات لوحة الإدارة (Passkeys): لا يجب أن يصل إليها المتصفح إطلاقاً،
+// لا قراءة ولا كتابة — فقط دوال Vercel عبر Firebase Admin SDK تلمس هذا المسار،
+// وقواعد الأمان هذه لا تُطبَّق أصلاً على Admin SDK (فهو يتجاوزها دائماً)، لذلك
+// منع المتصفح الكامل هنا هو الإعداد الصحيح والآمن.
+match /adminWebauthn/{uid} {
+  allow read, write: if false;
+}
+
+// مثال عام يمكنك تطبيقه على أي مجموعة بيانات حساسة أخرى تقرأها لوحة التحكم
+// مباشرة من المتصفح (مثل subscription_requests أو members). اربط الشرط
+// بكلا الأمرين معاً: البريد المعتمد + صلاحية admin=true التي لا تُمنَح إلا بعد
+// نجاح التحقق بالبصمة (WebAuthn) على الخادم:
+function isVerifiedAdmin() {
+  return request.auth != null
+      && request.auth.token.email == "wagdeeg777942749@gmail.com"
+      && request.auth.token.admin == true;
+}
+
+// match /subscription_requests/{doc} {
+//   allow read, write: if isVerifiedAdmin();
+// }
