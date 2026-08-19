@@ -1,0 +1,13 @@
+{
+  "name": "elixir-auctions",
+  "version": "1.0.0",
+  "private": true,
+  "description": "إكسير للمزادات — الموقع الثابت + دوال Vercel Serverless الخاصة ببوابة إدارة WebAuthn",
+  "scripts": {
+    "build": "node scripts/generate-admin-route.js"
+  },
+  "dependencies": {
+    "@simplewebauthn/server": "^9.0.3",
+    "firebase-admin": "^12.1.0"
+  }
+}
